@@ -8,14 +8,14 @@ interface EchoParams {
   message: string;
 }
 
-export default class Echo implements Command<EchoParams> {
-  name = 'echo';
-  params = [
+const Echo: Command<EchoParams> = {
+  displayName: 'echo',
+  params: [
     { name: 'channel', optional: true },
     { name: 'message', multipleWords: true }
-  ];
-  description = 'Repeats text in a specific channel.';
-  examples = [
+  ],
+  description: 'Repeats text in a specific channel.',
+  examples: [
     {
       usage: 'echo I love you',
       description: 'Sends "I love you" in the current channel.'
@@ -25,9 +25,9 @@ export default class Echo implements Command<EchoParams> {
       description:
         'Sends "I love you" in the #general channel, even if the command is given in another channel.'
     }
-  ];
+  ],
 
-  run: RunFunction<EchoParams> = async ({
+  run: async ({
     params,
     message: sourceMsg,
     channel: sourceChannel,
@@ -36,7 +36,7 @@ export default class Echo implements Command<EchoParams> {
     const { channel, message } = params;
 
     if (!message) {
-      Log.failedCommand(this.name, 'No message', sourceMsg);
+      Log.failedCommand(Echo, 'No message', sourceMsg);
       return;
     }
 
@@ -44,7 +44,7 @@ export default class Echo implements Command<EchoParams> {
       const destinationChannel = parseChannel(channel, guild);
       if (!destinationChannel) {
         sourceChannel.send(`⚠️ I couldn't find a channel named ${channel}.`);
-        Log.failedCommand(this.name, 'Invalid channel', sourceMsg);
+        Log.failedCommand(Echo, 'Invalid channel', sourceMsg);
         return;
       }
       (destinationChannel as TextChannel).send(message);
@@ -53,5 +53,7 @@ export default class Echo implements Command<EchoParams> {
     }
 
     sourceMsg.react('✅');
-  };
-}
+  }
+};
+
+export default Echo;

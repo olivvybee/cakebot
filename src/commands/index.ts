@@ -4,7 +4,7 @@ import { CommandModule } from '../interfaces';
 const modules = requireDirectory(module);
 
 const miscModule: CommandModule = {
-  name: 'miscellaneous',
+  displayName: 'miscellaneous',
   description: "Standalone commands that aren't part of another module.",
   commands: []
 };
@@ -17,12 +17,12 @@ Object.keys(modules).forEach(key => {
     miscModule.commands.push(exportedCommand);
   } else {
     const moduleExports = modules[key];
-    const name = moduleExports.index.moduleName || key;
+    const displayName = moduleExports.index.moduleName || key;
     const description =
       moduleExports.index.moduleDescription || 'No description given';
 
     const newModule: CommandModule = {
-      name,
+      displayName,
       description,
       commands: Object.keys(moduleExports)
         .filter(key => key !== 'index')

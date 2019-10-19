@@ -27,7 +27,7 @@ export interface Example {
 
 export interface Command<Params> {
   run: RunFunction<Params>;
-  name: string;
+  displayName: string;
   params: Parameter[];
   description: string;
   examples: Example[];
@@ -36,7 +36,7 @@ export interface Command<Params> {
 }
 
 export interface CommandModule {
-  name: string;
+  displayName: string;
   description: string;
   commands: Command<any>[];
 }

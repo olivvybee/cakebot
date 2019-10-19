@@ -4,7 +4,12 @@ import { config as loadEnv } from 'dotenv';
 import { Log } from './utils/logging';
 import { pluralise } from './utils/plural';
 
+import { commands } from './commands';
+import { CommandModule } from './interfaces';
+
 export class Client extends Discord.Client {
+  commandModules: CommandModule[] = [];
+
   constructor(options?: Discord.ClientOptions) {
     super(options);
   }
@@ -23,7 +28,20 @@ export class Client extends Discord.Client {
 
   initialiseDatabase = async () => {};
 
-  initialiseCommands = async () => {};
+  initialiseCommands = async () => {
+    this.commandModules = commands;
+
+    const commandCount = this.commandModules
+      .map(commandModule => commandModule.commands.length)
+      .reduce((acc, val) => acc + val, 0);
+    Log.green(
+      'Client',
+      `Loaded ${pluralise(commandCount, 'command')} in ${pluralise(
+        this.commandModules.length,
+        'module'
+      )}.`
+    );
+  };
 
   initialiseListeners = async () => {};
 }

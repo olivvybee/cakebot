@@ -1,4 +1,5 @@
 import chalk, { Chalk } from 'chalk';
+import { Message } from 'discord.js';
 
 export class Log {
   static colour = (
@@ -26,4 +27,17 @@ export class Log {
   ) => Log.colour(colour, tag, message, ...messages);
 
   static green = Log.createColour(chalk.green);
+  static yellow = Log.createColour(chalk.yellow);
+
+  static failedCommand = (
+    command: string,
+    reason: string,
+    sourceMsg: Message
+  ) => {
+    Log.yellow(
+      command,
+      `Failed: ${reason}.`,
+      `Triggered by:\n${sourceMsg.content}`
+    );
+  };
 }

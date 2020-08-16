@@ -13,10 +13,12 @@
     "test": "echo 'No tests.'"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.159",
     "chalk": "^4.1.0",
     "discord-akairo": "^8.0.0",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
+    "lodash": "^4.17.20",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   },

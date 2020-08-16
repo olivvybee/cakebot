@@ -1,4 +1,6 @@
-import { AkairoClient } from 'discord-akairo';
+import path from 'path';
+
+import { AkairoClient, ListenerHandler } from 'discord-akairo';
 import chalk from 'chalk';
 import { config as loadEnv } from 'dotenv';
 
@@ -19,7 +21,11 @@ if (!botToken) {
   process.exit(1);
 }
 
+const modulePath = (relativePath: string) => path.join(__dirname, relativePath);
+
 class Client extends AkairoClient {
+  public listenerHandler: ListenerHandler;
+
   constructor() {
     super(
       {
@@ -29,6 +35,16 @@ class Client extends AkairoClient {
         disableMentions: 'everyone',
       }
     );
+
+    this.listenerHandler = new ListenerHandler(this, {
+      directory: modulePath('listeners'),
+    });
+  }
+
+  async login(token?: string) {
+    const result = await super.login(token);
+    this.listenerHandler.loadAll();
+    return result;
   }
 }
 

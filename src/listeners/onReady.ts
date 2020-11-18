@@ -1,5 +1,4 @@
 import { Listener } from '../types';
-import chalk from 'chalk';
 
 export default class OnReadyListener extends Listener {
   constructor() {

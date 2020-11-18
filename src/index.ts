@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { AkairoClient, ListenerHandler } from 'discord-akairo';
+import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo';
 import chalk from 'chalk';
 import { config as loadEnv } from 'dotenv';
 
@@ -25,6 +25,7 @@ const modulePath = (relativePath: string) => path.join(__dirname, relativePath);
 
 class Client extends AkairoClient {
   public listenerHandler: ListenerHandler;
+  public commandHandler: CommandHandler;
 
   constructor() {
     super(
@@ -36,6 +37,13 @@ class Client extends AkairoClient {
       }
     );
 
+    this.commandHandler = new CommandHandler(this, {
+      directory: modulePath('commands'),
+      prefix: '!cb ',
+      allowMention: true,
+      blockBots: false,
+    });
+
     this.listenerHandler = new ListenerHandler(this, {
       directory: modulePath('listeners'),
     });
@@ -43,7 +51,12 @@ class Client extends AkairoClient {
 
   async login(token?: string) {
     const result = await super.login(token);
+
+    this.commandHandler.loadAll();
+    this.commandHandler.useListenerHandler(this.listenerHandler);
+
     this.listenerHandler.loadAll();
+
     return result;
   }
 }

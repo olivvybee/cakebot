@@ -1,4 +1,4 @@
-import { Listener } from '../types';
+import { Listener } from './interfaces';
 
 export default class OnReadyListener extends Listener {
   constructor() {

@@ -12,6 +12,8 @@ export default class Echo extends Command {
   constructor() {
     super('echo', {
       aliases: ['echo'],
+      description:
+        'Repeats a message either in the current channel or in a specific channel.',
     });
   }
 
@@ -44,4 +46,15 @@ export default class Echo extends Command {
 
     return channel.send(text);
   };
+
+  examples = [
+    {
+      args: '<message>',
+      description: 'Repeats the message in the current channel.',
+    },
+    {
+      args: '<channel> <message>',
+      description: 'Repeats the message in the specified channel.',
+    },
+  ];
 }

@@ -3,6 +3,7 @@ import path from 'path';
 import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo';
 import chalk from 'chalk';
 import { config as loadEnv } from 'dotenv';
+import { Database } from './database/Database';
 
 loadEnv();
 
@@ -23,9 +24,10 @@ if (!botToken) {
 
 const modulePath = (relativePath: string) => path.join(__dirname, relativePath);
 
-class Client extends AkairoClient {
+export class Client extends AkairoClient {
   public listenerHandler: ListenerHandler;
   public commandHandler: CommandHandler;
+  public database: Database;
 
   constructor() {
     super(
@@ -47,6 +49,8 @@ class Client extends AkairoClient {
     this.listenerHandler = new ListenerHandler(this, {
       directory: modulePath('listeners'),
     });
+
+    this.database = new Database();
   }
 
   async login(token?: string) {

@@ -4,29 +4,29 @@ import { PathIn } from '../utils/types';
 
 import { ServerData } from './interfaces';
 
-const firebaseConfig = [
-  'type',
-  'project_id',
-  'private_key_id',
-  'private_key',
-  'client_email',
-  'client_id',
-  'auth_uri',
-  'token_uri',
-  'auth_provider_x509_cert_url',
-  'client_x509_cert_url',
-].reduce(
-  (config, key) => ({
-    ...config,
-    [key]: process.env[`FIREBASE_${key.toUpperCase()}`],
-  }),
-  {}
-);
-
 export class Database {
   private db: firebase.database.Reference;
 
   constructor() {
+    const firebaseConfig = [
+      'type',
+      'project_id',
+      'private_key_id',
+      'private_key',
+      'client_email',
+      'client_id',
+      'auth_uri',
+      'token_uri',
+      'auth_provider_x509_cert_url',
+      'client_x509_cert_url',
+    ].reduce(
+      (config, key) => ({
+        ...config,
+        [key]: process.env[`FIREBASE_${key.toUpperCase()}`],
+      }),
+      {}
+    );
+
     firebase.initializeApp({
       credential: firebase.credential.cert(firebaseConfig),
       databaseURL: process.env.FIREBASE_DATABASE_URL,

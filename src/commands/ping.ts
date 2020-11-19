@@ -8,11 +8,6 @@ export default class Ping extends Command {
   }
 
   exec = (message: Message) => {
-    const timeNow = new Date();
-    const sentTime = message.createdAt;
-    const timeDifference = sentTime.getTime() - timeNow.getTime();
-    const latency = (timeDifference / 1000).toFixed(2);
-
-    return message.channel.send(`Pong!\nLatency: ${latency}ms`);
+    return message.channel.send('Pong!');
   };
 }

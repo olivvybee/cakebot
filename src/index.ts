@@ -55,6 +55,9 @@ class Client extends AkairoClient {
     this.commandHandler.loadAll();
     this.commandHandler.useListenerHandler(this.listenerHandler);
 
+    this.listenerHandler.setEmitters({
+      commandHandler: this.commandHandler,
+    });
     this.listenerHandler.loadAll();
 
     return result;

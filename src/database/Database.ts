@@ -1,6 +1,8 @@
 import * as firebase from 'firebase-admin';
+import Medusa from 'medusajs';
 
 import { PathIn } from '../utils/types';
+import { CACHE_LENGTH } from './constants';
 
 import { ServerData } from './interfaces';
 
@@ -34,16 +36,25 @@ export class Database {
     this.db = firebase.database().ref('/');
   }
 
-  public get = async <T extends any>(
+  public get = async <T = any>(
     serverId: string,
     path?: PathIn<ServerData>
   ): Promise<T | undefined> => {
     let ref = this.resolvePath(serverId, path);
-    const snapshot = await ref.once('value');
-    return snapshot.val() as T;
+
+    const value = await Medusa.get<T>(
+      ref.toString(),
+      async (resolve) => {
+        const dbSnapshot = await ref.once('value');
+        resolve(dbSnapshot.val());
+      },
+      CACHE_LENGTH
+    );
+
+    return value;
   };
 
-  public getArray = async <T extends any>(
+  public getArray = async <T = any>(
     serverId: string,
     path: PathIn<ServerData>
   ): Promise<T[] | undefined> => {
@@ -51,7 +62,14 @@ export class Database {
     if (!pathData) {
       return undefined;
     }
-    return Object.values(pathData);
+
+    // If the array was cached, it will be returned as an array, otherwise
+    // it'll be an object with ordered keys and the array values.
+    if (Array.isArray(pathData)) {
+      return pathData;
+    } else {
+      return Object.values(pathData);
+    }
   };
 
   public set = async (
@@ -60,6 +78,8 @@ export class Database {
     path?: PathIn<ServerData>
   ) => {
     let ref = this.resolvePath(serverId, path);
+
+    Medusa.put(ref.toString(), value, CACHE_LENGTH);
     await ref.set(value);
   };
 
@@ -69,11 +89,18 @@ export class Database {
     path: PathIn<ServerData>
   ) => {
     let ref = this.resolvePath(serverId, path);
+
+    const existingArray = await this.getArray(serverId, path);
+    const newArray = existingArray ? [...existingArray, value] : [value];
+    Medusa.put(ref.toString(), newArray, CACHE_LENGTH);
+
     ref.push(value);
   };
 
   public delete = async (serverId: string, path?: PathIn<ServerData>) => {
     let ref = this.resolvePath(serverId, path);
+
+    Medusa.clear(ref.toString());
     await ref.remove();
   };
 

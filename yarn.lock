@@ -1187,6 +1187,11 @@ make-error@^1.1.1:
   resolved "https://registry.yarnpkg.com/make-error/-/make-error-1.3.6.tgz#2eb2e37ea9b67c4891f684a1394799af484cf7a2"
   integrity sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==
 
+medusajs@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/medusajs/-/medusajs-1.2.4.tgz#9c4103d9a2447547e157a76bfc1395ef3a77b28f"
+  integrity sha1-nEED2aJEdUfhV6dr/BOV7zp3so8=
+
 mime-db@1.44.0:
   version "1.44.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.44.0.tgz#fa11c5eb0aca1334b4233cb4d52f10c5a6272f92"

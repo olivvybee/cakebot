@@ -14,9 +14,9 @@ export default class CommandLogger extends Listener {
     const userId = message.author.id;
     const argList = !!args
       ? Object.entries(args)
-          .map(([name, value]) => `${name}="${value}"`)
+          .map(([name, value]) => `${name}=\`${value}\``)
           .join(', ')
       : '';
-    this.log.cyan(`${command.id} called by ${userId} with args [${argList}]`);
+    this.log.cyan(`${command.id} called by ${userId} with args: ${argList}`);
   };
 }

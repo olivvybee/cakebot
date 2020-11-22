@@ -22,6 +22,11 @@ export default class Mod extends Command {
     });
   }
 
+  userPermissions = async (message: Message) => {
+    const isMod = await this.client.isMod(message.member!);
+    return isMod ? null : 'Mod role';
+  };
+
   exec = (message: Message, args: ModArgs) => {
     const { action, role } = args;
 
@@ -105,4 +110,6 @@ export default class Mod extends Command {
       description: 'Removes mod permissions for the specified role.',
     },
   ];
+
+  requiresMod = true;
 }

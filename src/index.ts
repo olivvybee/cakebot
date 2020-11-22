@@ -4,6 +4,8 @@ import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo';
 import chalk from 'chalk';
 import { config as loadEnv } from 'dotenv';
 import { Database } from './database/Database';
+import { GuildMember } from 'discord.js';
+import { createLogFunctions } from './utils/logging';
 
 loadEnv();
 
@@ -53,6 +55,8 @@ export class Client extends AkairoClient {
     this.database = new Database();
   }
 
+  log = createLogFunctions('client');
+
   async login(token?: string) {
     const result = await super.login(token);
 
@@ -66,6 +70,24 @@ export class Client extends AkairoClient {
 
     return result;
   }
+
+  isMod = async (user: GuildMember) => {
+    const serverId = user.guild.id;
+    this.log.magenta(`Checking if ${user.id} is a mod in ${serverId}.`);
+    const modRoles = await this.database.getArray(user.guild.id, 'modRoles');
+    if (!modRoles || !modRoles.length) {
+      this.log.magenta(`${serverId} does not use mod roles.`);
+      return true;
+    }
+
+    if (user.roles.cache.some((role) => modRoles.includes(role))) {
+      this.log.magenta(`${user.id} is a mod in ${serverId}.`);
+      return true;
+    } else {
+      this.log.magenta(`${user.id} is not a mod in ${serverId}.`);
+      return false;
+    }
+  };
 }
 
 const client = new Client();

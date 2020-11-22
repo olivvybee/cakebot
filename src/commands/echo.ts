@@ -47,14 +47,17 @@ export default class Echo extends Command {
     return channel.send(text);
   };
 
-  examples = [
-    {
-      args: '<message>',
-      description: 'Repeats the message in the current channel.',
-    },
-    {
-      args: '<channel> <message>',
-      description: 'Repeats the message in the specified channel.',
-    },
-  ];
+  documentation = {
+    examples: [
+      {
+        args: '<message>',
+        description: 'Repeats the message in the current channel.',
+      },
+      {
+        args: '<channel> <message>',
+        description: 'Repeats the message in the specified channel.',
+      },
+    ],
+    requiresMod: false,
+  };
 }

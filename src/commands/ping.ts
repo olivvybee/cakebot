@@ -14,11 +14,14 @@ export default class Ping extends Command {
     return message.channel.send('Pong!');
   };
 
-  examples = [
-    {
-      args: '',
-      description:
-        'Replies with "Pong!" if your message is received successfully.',
-    },
-  ];
+  documentation = {
+    examples: [
+      {
+        args: '',
+        description:
+          'Replies with "Pong!" if your message is received successfully.',
+      },
+    ],
+    requiresMod: false,
+  };
 }

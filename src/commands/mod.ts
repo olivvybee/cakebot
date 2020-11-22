@@ -99,17 +99,18 @@ export default class Mod extends Command {
     return message.channel.send(embed);
   };
 
-  examples = [
-    {
-      args: 'add <role>',
-      description:
-        'Gives the specified role mod permissions for cakebot commands.',
-    },
-    {
-      args: 'remove <role>',
-      description: 'Removes mod permissions for the specified role.',
-    },
-  ];
-
-  requiresMod = true;
+  documentation = {
+    examples: [
+      {
+        args: 'add <role>',
+        description:
+          'Gives the specified role mod permissions for cakebot commands.',
+      },
+      {
+        args: 'remove <role>',
+        description: 'Removes mod permissions for the specified role.',
+      },
+    ],
+    requiresMod: true,
+  };
 }

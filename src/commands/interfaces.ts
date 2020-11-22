@@ -9,10 +9,15 @@ interface Example {
   description: string;
 }
 
-export class Command extends AkairoCommand {
+interface Documentation {
+  examples: Example[];
+  requiresMod: boolean;
+}
+
+export abstract class Command extends AkairoCommand {
   public declare client: Client;
 
-  public examples: Example[] = [];
+  public abstract documentation: Documentation;
 
   protected log = createLogFunctions(`command.${this.id}`);
 

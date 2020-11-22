@@ -28,16 +28,33 @@ export default class Help extends Command {
   private showAllCommands = (message: Message) => {
     const commands = this.client.commandHandler.modules;
 
+    const modCommands = commands.filter(
+      (command) => (command as Command).documentation.requiresMod
+    );
+    const nonModCommands = commands.difference(modCommands);
+
+    const modText = modCommands.array().length
+      ? ' Commands marked with 🔒 require mod permissions.'
+      : '';
+
     const embed = new MessageEmbed();
     embed.setTitle('Cakebot help');
     embed.setDescription(
-      `These are all the commands I understand. Remember to use ${this.client.commandHandler.prefix} at the start of your command.`
+      `These are all the commands I understand. Remember to use ${this.client.commandHandler.prefix} at the start of your command.${modText}`
     );
-    commands.forEach((command) => {
+
+    nonModCommands.forEach((command) => {
       const name = command.aliases[0];
       const description = command.description || 'No overview available.';
 
       embed.addField(name, description);
+    });
+
+    modCommands.forEach((command) => {
+      const name = command.aliases[0];
+      const description = command.description || 'No overview available.';
+
+      embed.addField(`${name} 🔒`, description);
     });
 
     // TODO: Maybe send by DM to avoid revealing mod-only commands
@@ -53,12 +70,17 @@ export default class Help extends Command {
       );
     }
 
-    const { description, examples } = command as Command;
+    const { description, documentation } = command as Command;
+
+    const descriptionText = description || 'No overview available.';
+    const modText = documentation.requiresMod
+      ? '🔒 This command requires mod permissions.\n\n'
+      : '';
 
     const embed = new MessageEmbed();
     embed.setTitle(`${commandName}`);
-    embed.setDescription(description || 'No overview available.');
-    examples.forEach((example) => {
+    embed.setDescription(`${modText}${descriptionText}\n\u200B`);
+    documentation.examples.forEach((example) => {
       embed.addField(
         `${this.client.commandHandler.prefix}${commandName} ${example.args}`,
         example.description
@@ -68,14 +90,17 @@ export default class Help extends Command {
     return message.channel.send(embed);
   };
 
-  examples = [
-    {
-      args: '',
-      description: 'Lists all available commands.',
-    },
-    {
-      args: '<command>',
-      description: 'Shows help for a specific command.',
-    },
-  ];
+  documentation = {
+    examples: [
+      {
+        args: '',
+        description: 'Lists all available commands.',
+      },
+      {
+        args: '<command>',
+        description: 'Shows help for a specific command.',
+      },
+    ],
+    requiresMod: false,
+  };
 }

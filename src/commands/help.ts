@@ -1,3 +1,4 @@
+import { Collection } from 'discord.js';
 import { Message, MessageEmbed } from 'discord.js';
 
 import { Command } from './interfaces';
@@ -25,12 +26,22 @@ export default class Help extends Command {
     }
   };
 
-  private showAllCommands = (message: Message) => {
+  private showAllCommands = async (message: Message) => {
+    const serverUsesMods = message.guild
+      ? await this.client.serverUsesMods(message.guild)
+      : false;
+    const userIsMod =
+      serverUsesMods && message.member
+        ? await this.client.isMod(message.member)
+        : true;
+
     const commands = this.client.commandHandler.modules;
 
-    const modCommands = commands.filter(
-      (command) => (command as Command).documentation.requiresMod
-    );
+    const modCommands = serverUsesMods
+      ? commands.filter(
+          (command) => (command as Command).documentation.requiresMod
+        )
+      : new Collection<string, Command>();
     const nonModCommands = commands.difference(modCommands);
 
     const modText = modCommands.array().length
@@ -50,18 +61,20 @@ export default class Help extends Command {
       embed.addField(name, description);
     });
 
-    modCommands.forEach((command) => {
-      const name = command.aliases[0];
-      const description = command.description || 'No overview available.';
+    if (userIsMod) {
+      modCommands.forEach((command) => {
+        const name = command.aliases[0];
+        const description = command.description || 'No overview available.';
 
-      embed.addField(`${name} 🔒`, description);
-    });
+        embed.addField(`${name} 🔒`, description);
+      });
+    }
 
     // TODO: Maybe send by DM to avoid revealing mod-only commands
     return message.channel.send(embed);
   };
 
-  private showSingleCommand = (commandName: string, message: Message) => {
+  private showSingleCommand = async (commandName: string, message: Message) => {
     const command = this.client.commandHandler.findCommand(commandName);
     if (!command) {
       this.error(`No command named ${commandName}.`);
@@ -70,12 +83,17 @@ export default class Help extends Command {
       );
     }
 
+    const serverUsesMods = message.guild
+      ? await this.client.serverUsesMods(message.guild)
+      : false;
+
     const { description, documentation } = command as Command;
 
     const descriptionText = description || 'No overview available.';
-    const modText = documentation.requiresMod
-      ? '🔒 This command requires mod permissions.\n\n'
-      : '';
+    const modText =
+      serverUsesMods && documentation.requiresMod
+        ? '🔒 This command requires mod permissions.\n\n'
+        : '';
 
     const embed = new MessageEmbed();
     embed.setTitle(`${commandName}`);

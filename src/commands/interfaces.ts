@@ -12,6 +12,7 @@ interface Example {
 interface Documentation {
   examples: Example[];
   requiresMod: boolean;
+  parentCommand?: boolean;
 }
 
 export abstract class Command extends AkairoCommand {

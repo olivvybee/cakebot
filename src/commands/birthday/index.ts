@@ -1,4 +1,4 @@
-import { Flag } from 'discord-akairo';
+import { CommandHandler, Flag } from 'discord-akairo';
 import { Message } from 'discord.js';
 
 import { Command } from '../interfaces';
@@ -20,7 +20,7 @@ export default class Birthday extends Command {
 
   *args() {
     const subcommand = yield {
-      type: ['set'],
+      type: ['set', 'channel'],
     };
 
     const forwardedArgs = subcommand
@@ -40,8 +40,11 @@ export default class Birthday extends Command {
       `birthday-${subcommand}`
     );
     if (command) {
-      const parsedArgs = await command.parse(message, forwardedArgs);
-      this.client.commandHandler.runCommand(message, command, parsedArgs);
+      this.client.commandHandler.handleDirectCommand(
+        message,
+        forwardedArgs,
+        command
+      );
     }
   };
 

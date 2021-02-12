@@ -83,7 +83,11 @@ export default class BirthdaySet extends Command {
     const userId = message.author.id;
     const serverId = message.guild!.id;
 
-    this.client.database.set({ month, day }, serverId, `birthdays/${userId}`);
+    this.client.database.set(
+      { month, day },
+      serverId,
+      `birthdays/dates/${userId}`
+    );
     this.log.blue(
       `Birthday for ${userId} in ${serverId} set to month=${month} day=${day}`
     );

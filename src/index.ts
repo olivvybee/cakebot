@@ -81,7 +81,7 @@ export class Client extends AkairoClient {
       return true;
     }
 
-    if (user.roles.cache.some((role) => modRoles.includes(role))) {
+    if (user.roles.cache.some((role) => modRoles.includes(role.id))) {
       this.log.magenta(`${user.id} is a mod in ${serverId}.`);
       return true;
     } else {

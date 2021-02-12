@@ -20,6 +20,8 @@ const MONTH_NAMES = [
   'Dec',
 ];
 
+const VALID_DAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
 interface BirthdaySetArgs {
   date: string;
 }
@@ -71,8 +73,8 @@ export default class BirthdaySet extends Command {
       }
     }
 
-    if (month === undefined || day === undefined) {
-      this.error(`Failed to parse date ${date}.`);
+    if (month === undefined || day === undefined || day > VALID_DAYS[month]) {
+      this.error(`Failed to parse date "${date}"`);
       return message.channel.send(
         `I didn't understand the date you entered. Try something like \`12/25\` or \`25 Dec\`.`
       );

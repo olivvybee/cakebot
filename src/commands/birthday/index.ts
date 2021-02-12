@@ -1,4 +1,3 @@
-import { CommandHandler, Flag } from 'discord-akairo';
 import { Message } from 'discord.js';
 
 import { Command } from '../interfaces';

@@ -103,5 +103,5 @@ export class Client extends AkairoClient {
   };
 }
 
-const client = new Client();
+export const client = new Client();
 client.login(process.env.DISCORD_BOT_TOKEN);

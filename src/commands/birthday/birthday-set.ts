@@ -1,26 +1,9 @@
 import { Message } from 'discord.js';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 import { Command } from '../interfaces';
 
-const SEPARATORS = ['/', '.', ',', '-', ':'];
-
-const MONTH_NAMES = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
-
-const VALID_DAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+import { MONTH_NAMES, SEPARATORS, VALID_DAYS } from './constants';
 
 interface BirthdaySetArgs {
   date: string;

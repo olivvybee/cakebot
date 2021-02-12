@@ -2,6 +2,7 @@ import { TextChannel } from 'discord.js';
 import { Message, Channel } from 'discord.js';
 
 import { Command } from '../interfaces';
+import { updateBirthdayList } from './update-list';
 
 interface BirthdayChannelArgs {
   channel: Channel;
@@ -54,6 +55,8 @@ export default class BirthdayChannel extends Command {
 
       this.client.database.set(channel.id, serverId, 'birthdays/channel');
       this.log.blue(`Birthday channel for ${serverId} set to ${channel.id}`);
+
+      await updateBirthdayList(serverId);
 
       return message.channel.send(`Birthday list created in ${channel}!`);
     } else {

@@ -42,7 +42,7 @@ export default class Birthday extends Command {
     if (command) {
       this.client.commandHandler.handleDirectCommand(
         message,
-        forwardedArgs,
+        forwardedArgs || '',
         command
       );
     }

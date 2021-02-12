@@ -39,6 +39,10 @@ export default class BirthdaySet extends Command {
   exec = (message: Message, args: BirthdaySetArgs) => {
     const { date } = args;
 
+    if (!date) {
+      return;
+    }
+
     let month;
     let day;
     let ambiguous = false;

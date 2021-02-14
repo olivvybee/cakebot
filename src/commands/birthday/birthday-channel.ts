@@ -43,14 +43,22 @@ export default class BirthdayChannel extends Command {
         'birthdays/listMessage'
       );
       if (pinId) {
-        const channel = await this.client.channels.fetch(existingChannelId);
-        const pinnedMessage = await (channel as TextChannel).messages.fetch(
-          pinId
-        );
-        await pinnedMessage.delete();
+        try {
+          const channel = await this.client.channels.fetch(existingChannelId);
+          const pinnedMessage = await (channel as TextChannel).messages.fetch(
+            pinId
+          );
+          await pinnedMessage.delete();
+          this.log.blue(
+            `Deleted pinned birthday list ${pinId} for ${serverId}`
+          );
+        } catch (error) {
+          this.log.blue(
+            `List message ${pinId} appears to have already been deleted`
+          );
+        }
         await this.client.database.delete(serverId, 'birthdays/channel');
         await this.client.database.delete(serverId, 'birthdays/listMessage');
-        this.log.blue(`Deleted pinned birthday list ${pinId} for ${serverId}`);
       }
 
       this.client.database.set(channel.id, serverId, 'birthdays/channel');

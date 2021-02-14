@@ -15,7 +15,7 @@ export default class BirthdaySet extends Command {
       args: [{ id: 'date', match: 'content' }],
       channel: 'guild',
       category: 'birthday',
-      description: 'Adds your birthday to the birthdays list.',
+      description: 'Adds your birthday to the birthday list.',
     });
   }
 
@@ -89,7 +89,13 @@ export default class BirthdaySet extends Command {
   };
 
   documentation = {
-    examples: [],
+    examples: [
+      {
+        args: '<date>',
+        description:
+          'Adds your birthday to the birthday list. Accepts formats like `18/10`, `10/18`, and `18 Oct`.',
+      },
+    ],
     requiresMod: false,
   };
 }

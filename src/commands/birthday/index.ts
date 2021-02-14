@@ -13,7 +13,7 @@ export default class Birthday extends Command {
       aliases: ['birthday', 'bday'],
       channel: 'guild',
       category: 'birthday',
-      description: 'Parent command for birthday related commands.',
+      description: 'Commands for interacting with the server birthday list.',
     });
   }
 

@@ -78,7 +78,12 @@ export default class BirthdayChannel extends Command {
   };
 
   documentation = {
-    examples: [],
+    examples: [
+      {
+        args: '<channel>',
+        description: 'Moves the birthday list to the specified channel.',
+      },
+    ],
     requiresMod: true,
   };
 }

@@ -1,6 +1,7 @@
 import { TextChannel } from 'discord.js';
 import { MessageEmbed } from 'discord.js';
 import { client } from '../..';
+import { getUsername } from '../../utils/users';
 import { MONTH_NAMES } from './constants';
 
 interface BirthdaysByMonth {
@@ -60,7 +61,7 @@ export const updateBirthdayList = async (serverId: string) => {
 
     const list = Object.keys(monthBirthdays).reduce((result, day) => {
       const dayBirthdays = monthBirthdays[day]
-        .map((userId: string) => userId)
+        .map((userId: string) => getUsername(serverId, userId))
         .filter((item) => !!item)
         .join(', ');
 

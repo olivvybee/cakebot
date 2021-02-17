@@ -13,7 +13,6 @@ interface BirthdaysByMonth {
 export const updateBirthdayList = async (serverId: string) => {
   const { channel: channelId, listMessage: listMessageId, dates } =
     (await client.database.get(serverId, 'birthdays')) || {};
-  console.log({ channelId, listMessageId, dates });
 
   if (!channelId) {
     client.log.red(`No birthday channel set for ${serverId}`);
@@ -81,6 +80,7 @@ export const updateBirthdayList = async (serverId: string) => {
       const existingMessage = await (channel as TextChannel).messages.fetch(
         listMessageId
       );
+      client.log.blue(`Birthday list updated for ${serverId}`);
       return existingMessage.edit(embed);
     } catch (error) {
       client.log.blue(
@@ -91,4 +91,5 @@ export const updateBirthdayList = async (serverId: string) => {
 
   const newMessage = await (channel as TextChannel).send(embed);
   client.database.set(newMessage.id, serverId, 'birthdays/listMessage');
+  client.log.blue(`Birthday list ${newMessage.id} created for ${serverId}`);
 };

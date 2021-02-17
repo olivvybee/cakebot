@@ -2,7 +2,7 @@ import { Command as AkairoCommand } from 'discord-akairo';
 
 import { Client } from '../index';
 
-import { createLogFunctions } from '../utils/logging';
+import { createLogFunction } from '../utils/logging';
 
 interface Example {
   args: string;
@@ -20,9 +20,9 @@ export abstract class Command extends AkairoCommand {
 
   public abstract documentation: Documentation;
 
-  protected log = createLogFunctions(`command.${this.id}`);
+  protected log = createLogFunction(`command.${this.id}`, 'command');
 
   protected error = (message: string) => {
-    this.log.red(`Error: ${message}`);
+    this.log(`Error: ${message}`);
   };
 }

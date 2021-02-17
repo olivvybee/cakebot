@@ -49,11 +49,9 @@ export default class BirthdayChannel extends Command {
             pinId
           );
           await pinnedMessage.delete();
-          this.log.blue(
-            `Deleted pinned birthday list ${pinId} for ${serverId}`
-          );
+          this.log(`Deleted pinned birthday list ${pinId} for ${serverId}`);
         } catch (error) {
-          this.log.blue(
+          this.log(
             `List message ${pinId} appears to have already been deleted`
           );
         }
@@ -62,13 +60,13 @@ export default class BirthdayChannel extends Command {
       }
 
       this.client.database.set(channel.id, serverId, 'birthdays/channel');
-      this.log.blue(`Birthday channel for ${serverId} set to ${channel.id}`);
+      this.log(`Birthday channel for ${serverId} set to ${channel.id}`);
 
       await updateBirthdayList(serverId);
 
       return message.channel.send(`Birthday list created in ${channel}!`);
     } else {
-      this.log.blue(
+      this.log(
         `Birthday channel for ${serverId} is already set to ${channel.id}`
       );
       return message.channel.send(

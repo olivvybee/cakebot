@@ -1,4 +1,7 @@
 import { client } from '../';
+import { createLogFunction } from './logging';
+
+const log = createLogFunction('userUtils', 'utility');
 
 export const getUsername = (serverId: string, userId: string) => {
   try {
@@ -6,9 +9,7 @@ export const getUsername = (serverId: string, userId: string) => {
     const user = client.util.resolveMember(userId, server.members.cache);
     return user.displayName;
   } catch (error) {
-    client.log.red(
-      `Failed to lookup username for ${userId} in ${serverId}: ${error}`
-    );
+    log(`Failed to lookup username for ${userId} in ${serverId}: ${error}`);
     return undefined;
   }
 };

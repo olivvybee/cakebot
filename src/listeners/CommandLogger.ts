@@ -17,6 +17,6 @@ export default class CommandLogger extends Listener {
           .map(([name, value]) => `${name}=\`${value}\``)
           .join(', ')
       : '';
-    this.log.cyan(`${command.id} called by ${userId} with args: ${argList}`);
+    this.log(`${command.id} called by ${userId} with args: ${argList}`);
   };
 }

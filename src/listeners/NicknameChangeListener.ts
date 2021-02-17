@@ -5,7 +5,7 @@ import { Listener } from './interfaces';
 
 export default class NicknameChangeListener extends Listener {
   constructor() {
-    super('nicknameChangeListener', {
+    super('nicknameChange', {
       emitter: 'client',
       event: 'guildMemberUpdate',
     });
@@ -18,7 +18,7 @@ export default class NicknameChangeListener extends Listener {
 
     const serverId = newMember.guild.id;
 
-    this.log.cyan(`Nickname for ${newMember.id} changed in ${serverId}`);
+    this.log(`Nickname for ${newMember.id} changed in ${serverId}`);
     updateBirthdayList(serverId);
   };
 }

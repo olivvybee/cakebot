@@ -6,7 +6,7 @@ import { config as loadEnv } from 'dotenv';
 import { Guild, GuildMember } from 'discord.js';
 
 import { Database } from './database/Database';
-import { createLogFunctions } from './utils/logging';
+import { createLogFunction } from './utils/logging';
 
 loadEnv();
 
@@ -56,7 +56,10 @@ export class Client extends AkairoClient {
     this.database = new Database();
   }
 
-  log = createLogFunctions('client');
+  log = {
+    system: createLogFunction('client', 'system'),
+    permissions: createLogFunction('client', 'permissions'),
+  };
 
   async login(token?: string) {
     const result = await super.login(token);
@@ -74,30 +77,30 @@ export class Client extends AkairoClient {
 
   isMod = async (user: GuildMember) => {
     const serverId = user.guild.id;
-    this.log.magenta(`Checking if ${user.id} is a mod in ${serverId}.`);
+    this.log.permissions(`Checking if ${user.id} is a mod in ${serverId}.`);
     const modRoles = await this.database.getArray(user.guild.id, 'modRoles');
     if (!modRoles || !modRoles.length) {
-      this.log.magenta(`${serverId} does not use mod roles.`);
+      this.log.permissions(`${serverId} does not use mod roles.`);
       return true;
     }
 
     if (user.roles.cache.some((role) => modRoles.includes(role.id))) {
-      this.log.magenta(`${user.id} is a mod in ${serverId}.`);
+      this.log.permissions(`${user.id} is a mod in ${serverId}.`);
       return true;
     } else {
-      this.log.magenta(`${user.id} is not a mod in ${serverId}.`);
+      this.log.permissions(`${user.id} is not a mod in ${serverId}.`);
       return false;
     }
   };
 
   serverUsesMods = async (server: Guild) => {
-    this.log.magenta(`Checking if ${server.id} uses mod roles.`);
+    this.log.permissions(`Checking if ${server.id} uses mod roles.`);
     const modRoles = await this.database.getArray(server.id, 'modRoles');
     if (!!modRoles && modRoles.length > 0) {
-      this.log.magenta(`${server.id} uses mod roles.`);
+      this.log.permissions(`${server.id} uses mod roles.`);
       return true;
     } else {
-      this.log.magenta(`${server.id} does not use mod roles.`);
+      this.log.permissions(`${server.id} does not use mod roles.`);
       return false;
     }
   };

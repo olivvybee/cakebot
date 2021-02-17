@@ -1,25 +1,17 @@
 import chalk from 'chalk';
 import _pick from 'lodash/pick';
 
-const colours = _pick(chalk, [
-  'white',
-  'red',
-  'yellow',
-  'green',
-  'cyan',
-  'blue',
-  'magenta',
-  'black',
-  'grey',
-]);
+const functions = {
+  system: chalk.green,
+  permissions: chalk.cyan,
+  command: chalk.blue,
+  listener: chalk.magenta,
+  error: chalk.red,
+  utility: chalk.yellow,
+  plain: chalk.white,
+};
 
-export const createLogFunctions = (
-  tag: string
-): { [colour: string]: chalk.Chalk } =>
-  Object.entries(colours).reduce(
-    (logFunctions, [colour, func]) => ({
-      ...logFunctions,
-      [colour]: (...data: any[]) => console.log(func(`[${tag}]`, ...data)),
-    }),
-    {}
-  );
+export const createLogFunction = (
+  tag: string,
+  type: keyof typeof functions
+) => (...data: any[]) => console.log(functions[type](`[${tag}]`, ...data));

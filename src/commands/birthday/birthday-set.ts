@@ -75,7 +75,7 @@ export default class BirthdaySet extends Command {
       serverId,
       `birthdays/dates/${userId}`
     );
-    this.log.blue(
+    this.log(
       `Birthday for ${userId} in ${serverId} set to month=${month} day=${day}`
     );
 

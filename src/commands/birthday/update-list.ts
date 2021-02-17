@@ -1,6 +1,7 @@
 import { TextChannel } from 'discord.js';
 import { MessageEmbed } from 'discord.js';
 import { client } from '../..';
+import { createLogFunction } from '../../utils/logging';
 import { getUsername } from '../../utils/users';
 import { MONTH_NAMES } from './constants';
 
@@ -10,17 +11,19 @@ interface BirthdaysByMonth {
   };
 }
 
+const log = createLogFunction('birthdayListUpdater', 'utility');
+
 export const updateBirthdayList = async (serverId: string) => {
   const { channel: channelId, listMessage: listMessageId, dates } =
     (await client.database.get(serverId, 'birthdays')) || {};
 
   if (!channelId) {
-    client.log.red(`No birthday channel set for ${serverId}`);
+    log(`No birthday channel set for ${serverId}`);
     return;
   }
 
   if (!dates) {
-    client.log.red(`No birthdays saved for ${serverId}`);
+    log(`No birthdays saved for ${serverId}`);
     return;
   }
 
@@ -80,10 +83,10 @@ export const updateBirthdayList = async (serverId: string) => {
       const existingMessage = await (channel as TextChannel).messages.fetch(
         listMessageId
       );
-      client.log.blue(`Birthday list updated for ${serverId}`);
+      log(`Birthday list updated for ${serverId}`);
       return existingMessage.edit(embed);
     } catch (error) {
-      client.log.blue(
+      log(
         `List message ${listMessageId} appears to have been deleted, creating a new one for ${serverId}`
       );
     }
@@ -91,5 +94,5 @@ export const updateBirthdayList = async (serverId: string) => {
 
   const newMessage = await (channel as TextChannel).send(embed);
   client.database.set(newMessage.id, serverId, 'birthdays/listMessage');
-  client.log.blue(`Birthday list ${newMessage.id} created for ${serverId}`);
+  log(`Birthday list ${newMessage.id} created for ${serverId}`);
 };

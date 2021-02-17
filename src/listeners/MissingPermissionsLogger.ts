@@ -17,7 +17,7 @@ export default class MissingPermissionsLogger extends Listener {
     reason: string
   ) => {
     const userId = message.author.id;
-    this.log.cyan(
+    this.log(
       `${command.id} could not be run by ${userId} due to missng permissions: ${reason}`
     );
   };

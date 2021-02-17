@@ -10,6 +10,6 @@ export default class OnReadyListener extends Listener {
 
   exec() {
     const tag = this.client.user?.tag;
-    this.log.green(`Logged in as ${tag}`);
+    this.log(`Logged in as ${tag}`);
   }
 }

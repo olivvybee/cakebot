@@ -1,15 +1,11 @@
-import { TextChannel } from 'discord.js';
-import { MessageEmbed } from 'discord.js';
+import { TextChannel, MessageEmbed } from 'discord.js';
+
 import { client } from '../..';
 import { createLogFunction } from '../../utils/logging';
 import { getUsername } from '../../utils/users';
-import { MONTH_NAMES } from './constants';
 
-interface BirthdaysByMonth {
-  [month: string]: {
-    [day: string]: string[];
-  };
-}
+import { MONTH_NAMES } from './constants';
+import { groupBirthdaysByMonth } from './utils';
 
 const log = createLogFunction('birthdayListUpdater', 'utility');
 
@@ -32,25 +28,7 @@ export const updateBirthdayList = async (serverId: string) => {
   const embed = new MessageEmbed();
   embed.setTitle('Server birthdays');
 
-  const birthdaysByMonth: BirthdaysByMonth = Object.keys(dates).reduce(
-    (birthdays: BirthdaysByMonth, userId) => {
-      const { month, day } = dates[userId];
-
-      const monthObject = birthdays[month] || {};
-      const dayList = monthObject[day] || [];
-
-      dayList.push(userId);
-
-      return {
-        ...birthdays,
-        [month]: {
-          ...birthdays[month],
-          [day]: dayList,
-        },
-      };
-    },
-    {}
-  );
+  const birthdaysByMonth = groupBirthdaysByMonth(dates);
 
   for (let month = 0; month < 12; month++) {
     const monthName = MONTH_NAMES[month];

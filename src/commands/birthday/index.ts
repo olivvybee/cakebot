@@ -19,7 +19,7 @@ export default class Birthday extends Command {
 
   *args() {
     const subcommand = yield {
-      type: ['set', 'channel'],
+      type: ['set', 'channel', 'next'],
     };
 
     const forwardedArgs = subcommand

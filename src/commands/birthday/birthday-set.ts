@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { Command } from '../interfaces';
 
 import { MONTH_NAMES, SEPARATORS, VALID_DAYS } from './constants';
+import { updateBirthdayList } from './update-list';
 
 interface BirthdaySetArgs {
   date: string;
@@ -85,7 +86,8 @@ export default class BirthdaySet extends Command {
       reply += ` If you meant ${reversed} instead, try entering the date as \`${reversed}\`.`;
     }
 
-    message.channel.send(reply);
+    updateBirthdayList(serverId);
+    return message.channel.send(reply);
   };
 
   documentation = {

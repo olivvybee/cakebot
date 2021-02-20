@@ -17,6 +17,8 @@ export default class CommandLogger extends Listener {
           .map(([name, value]) => `${name}=\`${value}\``)
           .join(', ')
       : '';
-    this.log(`${command.id} called by ${userId} with args: ${argList}`);
+
+    const argOutput = argList.length ? `: ${argList}` : 'no args';
+    this.log(`${command.id} called by ${userId} with ${argOutput}`);
   };
 }

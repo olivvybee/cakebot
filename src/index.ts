@@ -7,6 +7,12 @@ import { Guild, GuildMember } from 'discord.js';
 
 import { Database } from './database/Database';
 import { createLogFunction } from './utils/logging';
+import { logException } from './utils/exceptions';
+
+process.on('unhandledRejection', (error) => {
+  const exception = error as Error;
+  logException(exception);
+});
 
 loadEnv();
 

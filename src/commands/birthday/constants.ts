@@ -1,18 +1,18 @@
 export const SEPARATORS = ['/', '.', ',', '-', ':'];
 
 export const MONTH_NAMES = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
+  'January',
+  'February',
+  'March',
+  'April',
   'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 export const VALID_DAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];

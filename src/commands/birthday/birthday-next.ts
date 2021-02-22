@@ -64,7 +64,7 @@ export default class BirthdayNext extends Command {
 
     const list = formatList(names);
     const unit = names.length === 1 ? 'birthday' : 'birthdays';
-    const formattedDate = date.format('DD MMM');
+    const formattedDate = date.format('DD MMMM');
 
     const reply = `The next ${unit} will be ${list} on ${formattedDate}.`;
 

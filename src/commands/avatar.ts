@@ -28,6 +28,7 @@ export default class Avatar extends Command {
 
     const imageUrl = user.displayAvatarURL({
       format: 'png',
+      size: 1024,
       dynamic: true,
     });
 

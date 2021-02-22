@@ -3,7 +3,7 @@ import { GuildMember, Message, MessageEmbed } from 'discord.js';
 import { Command } from './interfaces';
 
 interface AvatarArgs {
-  user: GuildMember | null;
+  user: GuildMember | null | undefined;
 }
 
 export default class Avatar extends Command {
@@ -17,6 +17,11 @@ export default class Avatar extends Command {
   }
 
   exec = (message: Message, args: AvatarArgs) => {
+    if (args.user === undefined) {
+      this.error('Unknown user');
+      return message.channel.send("I can't find that person.");
+    }
+
     const target = args.user || message.member!;
 
     const { displayName, displayHexColor, user } = target;

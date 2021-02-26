@@ -1,16 +1,16 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed, MessageAttachment } from 'discord.js';
 import Color from 'color';
 import { createCanvas } from 'canvas';
 
+import { CONTRAST_THRESHOLD } from '../constants';
+import { getContrastString } from '../utils/colour';
+
 import { Command } from './interfaces';
-import { MessageAttachment } from 'discord.js';
 
 interface ContrastArgs {
   colourA: string | null;
   colourB: string | null;
 }
-
-const CONTRAST_THRESHOLD = 4.5;
 
 export default class Contrast extends Command {
   constructor() {
@@ -34,27 +34,31 @@ export default class Contrast extends Command {
       );
     }
 
-    const a = Color(colourA);
-    const b = Color(colourB);
+    const parsedA = Color(colourA);
+    const parsedB = Color(colourB);
 
-    const contrast = a.contrast(b);
-    const emoji = contrast >= CONTRAST_THRESHOLD ? '✅' : '⚠️';
+    const a = parsedA.hex();
+    const b = parsedB.hex();
+
+    const mixed = parsedA.mix(parsedB).hex();
+
+    const contrast = getContrastString(a, b);
 
     const canvas = createCanvas(256, 256);
     const ctx = canvas.getContext('2d');
     ctx.font = 'bold 128px sans-serif';
-    ctx.fillStyle = `${a.hex()}`;
+    ctx.fillStyle = a;
     ctx.fillRect(0, 0, 256, 256);
-    ctx.fillStyle = `${b.hex()}`;
+    ctx.fillStyle = b;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('Aa', 128, 128);
     const image = canvas.toBuffer();
 
     const embed = new MessageEmbed()
-      .setTitle(`Colour contrast between ${a.hex()} and ${b.hex()}`)
-      .setDescription(`${emoji}  ${contrast.toFixed(2)}`)
-      .setColor(a.mix(b).hex())
+      .setTitle(`Colour contrast between ${a} and ${b}`)
+      .setDescription(contrast)
+      .setColor(mixed)
       .setFooter(`Minimum for WCAG 2.1 AA is ${CONTRAST_THRESHOLD}`)
       .attachFiles([new MessageAttachment(image, 'example.png')])
       .setThumbnail('attachment://example.png');

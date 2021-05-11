@@ -24,7 +24,7 @@
     "discord.js": "^12.4.0",
     "dotenv": "^8.2.0",
     "firebase-admin": "^9.4.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "medusajs": "^1.2.4",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
